@@ -1,0 +1,134 @@
+"use strict";
+
+var objPosX = 1;
+var objPosY = 1;
+var objDirection = 2;
+
+const BASE_X = 50;
+const BASE_Y = 50;
+const BLOCK_SPAN = 600 / maze.length;
+
+const CANVAS_WIDTH = 1280;
+const CANVAS_HEIGHT = 720;
+
+const image = new Image();
+
+// テスト用　キー操作
+window.addEventListener('keyup', function() {
+    let ctx = document.getElementById("canvas").getContext("2d")
+    switch(event.keyCode) {
+        case 38: {
+            goAhead(ctx);
+            break;
+        }
+        case 39: {
+            rotRight(ctx);
+            break;
+        }
+        case 37: {
+            rotLeft(ctx);
+            break;
+        }
+    } 
+});
+
+window.onload = function() {
+    let canvas = document.getElementById("canvas");
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
+
+    let ctx = canvas.getContext("2d");
+
+    image.onload = function() {
+        ctx.globalAlpha = 1.0;
+        ctx.globalCompositeOperation = "source-over";
+        ctx.imageSmoothingEnabled = true;
+
+        refreash(ctx);
+    };
+
+    image.src = "img/test.jpeg";
+};
+
+// 衝突判定
+var isCollision = function(x, y) {
+    return maze[y][x] < 0;
+}
+
+// ゴール判定
+var isGoal = function(x, y) {
+    return maze[y][x] == 2;
+}
+
+var goAhead = function(ctx) {
+    // 現在の向きによって、X方向・Y方向・-X方向・-Y方向
+    let tmpX, tmpY;
+    switch(objDirection) {
+        case 0: {
+            tmpX = objPosX;
+            tmpY = objPosY - 1;
+            break;
+        }
+        case 1: {
+            tmpX = objPosX + 1;
+            tmpY = objPosY;
+            break;
+        }
+        case 2: {
+            tmpX = objPosX;
+            tmpY = objPosY + 1;
+            break;
+        }
+        case 3: {
+            tmpX = objPosX - 1;
+            tmpY = objPosY;
+            break;
+        }
+    }
+
+    // 衝突判定
+    if(isCollision(tmpX, tmpY)) {
+        return;
+    }
+
+    // 問題ないので進ませる
+    objPosX = tmpX; objPosY = tmpY;
+    refreash(ctx);
+
+    // ゴール判定
+    if(isGoal(objPosX, objPosY)) {
+        alert("GOAL!");
+    }
+}
+
+// 右回転
+var rotRight =  function(ctx) {
+    objDirection = (objDirection + 1) % 4;
+    refreash(ctx);
+}
+
+// 左回転
+var rotLeft = function(ctx) {
+    objDirection = (objDirection == 0) ? 3 : objDirection - 1;
+    refreash(ctx);
+}
+
+// 画面の再描画
+var refreash = function(ctx) {
+    refreashScreen(ctx);
+    drawMaze(ctx, BASE_X, BASE_Y, BLOCK_SPAN);
+
+    // コンテキストの現在の状態を保持
+    ctx.save();
+
+    let x = BASE_X + (objPosX * BLOCK_SPAN) + (BLOCK_SPAN / 2);
+    let y = BASE_Y + (objPosY * BLOCK_SPAN) + (BLOCK_SPAN / 2);
+
+    ctx.translate(x, y);
+    if(objDirection != 0)
+        ctx.rotate(objDirection * 90 * Math.PI / 180);
+    ctx.drawImage(image, -BLOCK_SPAN / 2, -BLOCK_SPAN / 2, BLOCK_SPAN, BLOCK_SPAN);
+
+    // コンテキストの状態を復元
+    ctx.restore();
+}

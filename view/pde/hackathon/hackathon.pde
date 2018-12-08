@@ -87,6 +87,42 @@ void mouseReleased(){
     }
 }
 
+String getBlocksInfo() {
+  ArrayList<Block> resultList = new ArrayList<Block>();
+  for(Block block : blockList) {
+    if(block.preBlock == null) {
+      // 終端にたどり着くまでループ
+      ArrayList<Block> tmpList = new ArrayList<Block>();
+      Block currentBlock = block;
+      do {
+       tmpList.add(currentBlock);
+       currentBlock = currentBlock.postBlock;
+      } while(currentBlock != null);
+      
+      // 最長のものを採用する
+      if(resultList.size() < tmpList.size()) {
+        resultList.clear();
+        resultList.addAll(tmpList);
+      }
+    }
+  }
+  
+  // ついでに最長の接続以外を消しちゃう
+  blockList.clear();
+  blockList.addAll(resultList);
+  
+  // 結果リストから文字列生成
+  String s = "";
+  for(Block block : resultList) {
+    if(s.length() > 0) {
+      s += ",";
+    }
+    s += block.name;
+  }
+  
+  return s;
+}
+
 class Block {
     final String name;
     int x, y, w, h;
