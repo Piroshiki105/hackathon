@@ -1,0 +1,2 @@
+class ConfirmController < ApplicationController
+end
