@@ -1,3 +1,15 @@
 // Place all the styles related to the start controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+*{
+	margin: 0;
+	padding: 0; 
+}
+
+/*--------------------------------↓input.html↓--------------------------------------*/
+/*--------------------------------↑input.html↑--------------------------------------*/
+
+/*--------------------------------↓start.html↓--------------------------------------*/
+#level ul li a{display: block; width:150px; text-align: center; border:1px solid #888; border-radius: 5px; color: #000; text-decoration: none;}
+#level ul li a:hover{display: block; width:150px; text-align: center; border:1px solid #888; border-radius: 5px; background-color:#bbb; color: #000; text-decoration: none;}
+/*--------------------------------↑start.html↑--------------------------------------*/
