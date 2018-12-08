@@ -17,8 +17,11 @@ window.onload = function() {
 
 var execute = function() {
     var str = Processing.getInstanceById('app').getBlocksInfo();
-    if(str && str.length > 0) {
-        location.href = "confirm.html?blocks=" + str;
+    if(!str || str.length == 0) {
+        alert("ブロックが何も置かれていません");
+    } else {
+        var size = parseInt(maze.length) - 2;
+        location.href = "confirm.html?blocks=" + str + "&stage=" + size + "" + size ;
     }
 }
 
