@@ -1,23 +1,25 @@
-"use strict";
-const CANVAS_WIDTH = 600;
-const CANVAS_HEIGHT = 400;
+var CANVAS_WIDTH = 600;
+var CANVAS_HEIGHT = 400;
 
-const BASE_X = 150;
-const BASE_Y = 50;
-const BLOCK_SPAN = 300 / maze.length;
+var BASE_X = 150;
+var BASE_Y = 50;
+var BLOCK_SPAN = 300 / maze.length;
 
 window.onload = function() {
-    let canvas = document.getElementById("canvas");
+    var canvas = document.getElementById("canvas");
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
 
-    let ctx = canvas.getContext("2d");
+    var ctx = canvas.getContext("2d");
     refreashScreen(ctx);
     drawMaze(ctx, BASE_X, BASE_Y, BLOCK_SPAN);
 }
 
 var execute = function() {
-    alert(Processing.getInstanceById('app').getBlocksInfo());
+    var str = Processing.getInstanceById('app').getBlocksInfo();
+    if(str && str.length > 0) {
+        location.href = "confirm.html?blocks=" + str;
+    }
 }
 
 var save = function() {
