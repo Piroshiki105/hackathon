@@ -1,3 +1,12 @@
-<h1>confirm</h1>
-<%= @blockArray  %>
+<script type='text/javascript'>
+<%= @maze %>
+</script>
+
+<%= javascript_include_tag 'script.js' %>
+<%= javascript_include_tag 'confirm.js' %>
+
+<canvas id="canvas"></canvas>
+
+<script type='text/javascript'>
 <%= @function %>
+</script>

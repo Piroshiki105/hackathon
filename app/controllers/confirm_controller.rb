@@ -32,19 +32,19 @@ class ConfirmController < ApplicationController
         for block in blockArray do
             case block
             when "turnLeft"
-                function += "turnLeft();"
+                function += "sleep(1, turnLeft());\n"
             when "turnRight"
-                function += "trunRight();"
+                function += "sleep(1, turnRight());\n"
             when "forward"
-                function += "forward();"
+                function += "sleep(1, forward());\n"
             when "start_twice_for"
-                function += "startTwiceFor();"
+                function += "startTwiceFor();\n"
             when "end_twice_for"
-                function += "endTwiceFor();"
+                function += "endTwiceFor();\n"
             when "start_three_for"
-                function += "startThreeFor();"
+                function += "startThreeFor();\n"
             when "end_three_for"
-                function += "endThreeFor();"
+                function += "endThreeFor();\n"
             else
 
             end

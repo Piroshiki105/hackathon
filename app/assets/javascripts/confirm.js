@@ -4,18 +4,18 @@ var objPosX = 1;
 var objPosY = 1;
 var objDirection = 2;
 
-const BASE_X = 50;
+const BASE_X = 300;
 const BASE_Y = 50;
 const BLOCK_SPAN = 600 / maze.length;
 
-const CANVAS_WIDTH = 1280;
-const CANVAS_HEIGHT = 720;
+const CANVAS_WIDTH = 1200;
+const CANVAS_HEIGHT = 800;
 
-const image = new Image();
+var image = new Image();
 
 // テスト用　キー操作
 window.addEventListener('keyup', function() {
-    let ctx = document.getElementById("canvas").getContext("2d")
+    let ctx = document.getElementById("canvas").getContext("2d");
     switch(event.keyCode) {
         case 38: {
             goAhead(ctx);
@@ -47,7 +47,7 @@ window.onload = function() {
         refreash(ctx);
     };
 
-    image.src = "img/test.jpeg";
+    image.src = "http://4.bp.blogspot.com/_Q5SpTKazer0/SaXGrslGszI/AAAAAAAAENM/EzdCD30IBhQ/s400/salmon+onigiri+3.jpg";
 };
 
 // 衝突判定
@@ -60,7 +60,9 @@ var isGoal = function(x, y) {
     return maze[y][x] == 2;
 }
 
-var goAhead = function(ctx) {
+var forward = function() {
+    var ctx = document.getElementById("canvas").getContext("2d");
+
     // 現在の向きによって、X方向・Y方向・-X方向・-Y方向
     let tmpX, tmpY;
     switch(objDirection) {
@@ -102,13 +104,15 @@ var goAhead = function(ctx) {
 }
 
 // 右回転
-var rotRight =  function(ctx) {
+var turnRight =  function() {
+    var ctx = document.getElementById("canvas").getContext("2d");
     objDirection = (objDirection + 1) % 4;
     refreash(ctx);
 }
 
 // 左回転
-var rotLeft = function(ctx) {
+var turnLeft = function() {
+    var ctx = document.getElementById("canvas").getContext("2d");
     objDirection = (objDirection == 0) ? 3 : objDirection - 1;
     refreash(ctx);
 }
@@ -131,4 +135,5 @@ var refreash = function(ctx) {
 
     // コンテキストの状態を復元
     ctx.restore();
+    // sleep(1);
 }
