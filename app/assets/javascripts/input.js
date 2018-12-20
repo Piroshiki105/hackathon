@@ -1,3 +1,5 @@
+'use strict'
+
 var CANVAS_WIDTH = 600;
 var CANVAS_HEIGHT = 400;
 
