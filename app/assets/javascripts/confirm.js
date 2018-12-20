@@ -32,7 +32,7 @@ window.addEventListener('keyup', function() {
     } 
 });
 
-window.onload = function() {
+window.addEventListener('load', function() {
     let canvas = document.getElementById("canvas");
     canvas.width = CANVAS_WIDTH;
     canvas.height = CANVAS_HEIGHT;
@@ -48,7 +48,7 @@ window.onload = function() {
     };
 
     image.src = "http://4.bp.blogspot.com/_Q5SpTKazer0/SaXGrslGszI/AAAAAAAAENM/EzdCD30IBhQ/s400/salmon+onigiri+3.jpg";
-};
+});
 
 // 衝突判定
 var isCollision = function(x, y) {
@@ -61,6 +61,7 @@ var isGoal = function(x, y) {
 }
 
 var forward = function() {
+    console.log('fw start');
     var ctx = document.getElementById("canvas").getContext("2d");
 
     // 現在の向きによって、X方向・Y方向・-X方向・-Y方向
@@ -101,20 +102,31 @@ var forward = function() {
     if(isGoal(objPosX, objPosY)) {
         alert("GOAL!");
     }
+
+    console.log('fw done');
 }
 
 // 右回転
 var turnRight =  function() {
+    console.log('tr start');
+
     var ctx = document.getElementById("canvas").getContext("2d");
     objDirection = (objDirection + 1) % 4;
     refreash(ctx);
+
+    console.log('tr done');
 }
 
 // 左回転
 var turnLeft = function() {
+    console.log('tl start');
+
     var ctx = document.getElementById("canvas").getContext("2d");
     objDirection = (objDirection == 0) ? 3 : objDirection - 1;
     refreash(ctx);
+    
+    console.log('tl done');
+
 }
 
 // 画面の再描画
@@ -135,5 +147,4 @@ var refreash = function(ctx) {
 
     // コンテキストの状態を復元
     ctx.restore();
-    // sleep(1);
 }

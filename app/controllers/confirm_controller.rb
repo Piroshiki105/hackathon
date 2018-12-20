@@ -28,15 +28,15 @@ class ConfirmController < ApplicationController
     end
 
     def initFunction blockArray
-        function = ""
+        function = "var functions = [function(){ console.log('start func');}];\n"
         for block in blockArray do
             case block
             when "turnLeft"
-                function += "sleep(1, turnLeft());\n"
+                function += "functions.push(turnLeft);\n"
             when "turnRight"
-                function += "sleep(1, turnRight());\n"
+                function += "functions.push(turnRight);\n"
             when "forward"
-                function += "sleep(1, forward());\n"
+                function += "functions.push(forward);\n"
             when "start_twice_for"
                 function += "startTwiceFor();\n"
             when "end_twice_for"
@@ -48,8 +48,14 @@ class ConfirmController < ApplicationController
             else
 
             end
-            @function = function
         end
+        function += "var executeFunctions = function() {\n"
+        function += "\tif(functions.length == 0) return;"
+        function += "\t\tfunctions.shift(1)();\n"
+        function += "\t\tsetTimeout(executeFunctions, 1000);\n"
+        function += "};\n"
+        function += "window.addEventListener('load', executeFunctions);\n"
+        @function = function
     end
 
 end
