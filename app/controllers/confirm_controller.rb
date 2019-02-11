@@ -1,23 +1,28 @@
+require 'maze.rb'
+
 class ConfirmController < ApplicationController
 
     @function = ""
 
     def confirm
-        if params['blocks'] != nil && params['blocks'].length > 0  then
+        # 迷路
+        maze = Maze.new params['stage']  
+        @maze = maze.getMaze
 
-            maze = Maze.new params['stage']  
-            @maze = maze.getMaze
+        if params['blocks'] != nil && params['blocks'].length > 0  then
             setBlockDisassembly params['blocks']
             @blockArray = getblockArray
-            initFunction getblockArray
+            @function = initFunction getblockArray
         else
             @blockArray = "未入力"
+            @function = "window.addEventListener('load', alert('ブロックの読み込みに失敗しました。'));"
         end
     end
 
+    #配列を返す
     def setBlockDisassembly blocks
         if !blocks.include?(",") then
-            @blockArray = blocks.strip;
+            @blockArray = [blocks.strip];
         else
             @blockArray = blocks.split(",")
         end
@@ -37,46 +42,22 @@ class ConfirmController < ApplicationController
                 function += "functions.push(turnRight);\n"
             when "forward"
                 function += "functions.push(forward);\n"
-            when "start_twice_for"
-                function += "startTwiceFor();\n"
-            when "end_twice_for"
-                function += "endTwiceFor();\n"
-            when "start_three_for"
-                function += "startThreeFor();\n"
-            when "end_three_for"
-                function += "endThreeFor();\n"
+            when "startFor"
+                function += "for(var i = 0; i < 2; i++) {\n"
+            when "endFor"
+                function += "}\n"
             else
 
             end
         end
+        function += "window.addEventListener('load', console.log(functions));\n";
         function += "var executeFunctions = function() {\n"
         function += "\tif(functions.length == 0) return;"
         function += "\t\tfunctions.shift(1)();\n"
         function += "\t\tsetTimeout(executeFunctions, 1000);\n"
         function += "};\n"
         function += "window.addEventListener('load', executeFunctions);\n"
-        @function = function
-    end
-
-end
-
-class Maze
-    @maze
-
-    def initialize stage
-        case stage
-        when "44"
-            @maze = 'var maze = [[-1, -1, -1, -1, -1, -1], [-1, 1, 0, 0, 0, -1], [-1, 0, 0, 0, 0, -1], [-1, 0, -1, 0, 0, -1], [-1, 0, 0, 0, 2, -1], [-1, -1, -1, -1, -1, -1]];'
-        when "55"
-            @maze = 'var maze = [[-1, -1, -1, -1, -1, -1, -1], [-1, 1, 0, 0, 0, 0, -1], [-1, 0, 0, 0, 0, 0, -1], [-1, 0, 0, 0, 0, 0, -1], [-1, 0, 0, 0, 0, 0, -1], [-1, 0, 0, 0, 2, 0, -1], [-1, -1, -1, -1, -1, -1, -1]];'
-        when "66"
-            @maze = 'var maze = [[-1, -1, -1, -1, -1, -1, -1, -1], [-1, 1, 0, 0, 0, 0, 0, -1], [-1, 0, 0, 0, 0, 0, 0, -1], [-1, 0, 0, -1, -1, 0, 0, -1], [-1, 0, 0, 0, 0, 0, 0, -1], [-1, 0, 0, 0, 0, 0, 0, -1], [-1, 0, 0, 0, 2, 0, 0, -1], [-1, -1, -1, -1, -1, -1]];'
-        else
-        end
-    end
-
-    def getMaze
-        return @maze
+        return function
     end
 
 end

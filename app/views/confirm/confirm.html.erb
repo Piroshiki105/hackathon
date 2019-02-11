@@ -8,5 +8,7 @@
 <canvas id="canvas"></canvas>
 
 <script type='text/javascript'>
-<%= @function.html_safe %>
+<% if @function != nil then %>
+    <%= @function.html_safe %>
+<% end %>
 </script>
